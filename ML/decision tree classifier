@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+from sklearn import tree
+from sklearn.metrics import confusion_matrix
+from sklearn import svm
+import mongo_receive as call
+test=call.mongo_rec() #test set received from mongoDB
+test=pd.DataFrame(test)
+
+#using manual input of test data
+#test = train_data = pd.read_csv('pothole.csv',usecols=['Gx','Gy','Gz'])
+
+
+train_data = pd.read_csv('pothole_labled.csv',usecols=['Gx','Gy','Gz'])
+train_data= np.array(train_data)
+y = pd.read_csv('pothole_labled.csv',usecols=['Class'])
+
+dlf= tree.DecisionTreeClassifier()
+dlf = dlf.fit(train_data, y)
+
+prr=dlf.predict(test[['Gx','Gy','Gz']])
+print(prr.shape[0])
+test['class']=prr
+
+
+cf= pd.DataFrame({'col':prr})
+
+
+print(cf['col'])
+print(cf['col'].value_counts())
+
+
+
