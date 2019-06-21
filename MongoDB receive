@@ -1,0 +1,13 @@
+from pymongo import MongoClient 
+import pandas as pd
+import numpy as np
+import json
+def mongo_rec():
+
+    conn = MongoClient('mongodb://127.0.0.1',27017)
+    mydb = conn["roadSense"]
+    mycol = mydb["user"]
+    table = mycol.find()
+    df =  pd.DataFrame(list(table))
+    df=df.drop(['_id'], axis=1)
+    return df
